@@ -14,7 +14,7 @@ books_list = [
 def handle_books():
     if request.method == 'GET':
         if len(books_list) > 0:
-            return jsonify(books_list)
+            return jsonify(f"Below are the books present in our library, {books_list}")
         else:
             return jsonify({"error": "No books found"})
 
@@ -35,14 +35,14 @@ def handle_books():
         }
 
         books_list.append(new_obj)
-        return jsonify(new_obj)
+        return jsonify(f"New book added!, {new_obj}")
 
 @books.route('/book/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def single_book(id):
     if request.method == 'GET':
         for book in books_list:
             if book['id'] == id:
-                return jsonify(book)
+                return jsonify(f"Here is the book you requested, {book}")
         return jsonify({"error": "Book not found"})
 
     if request.method == 'PUT':
