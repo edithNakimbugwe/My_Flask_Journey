@@ -16,14 +16,17 @@ def handle_books():
         if len(books_list) > 0:
             return jsonify(books_list)
         else:
-            return jsonify({"error": "No books found"}), 404
+            return jsonify({"error": "No books found"})
 
     if request.method == 'POST':
         data = request.get_json()
-        if not data or 'author' not in data or 'title' not in data or 'language' not in data:
-            return jsonify({"error": "Invalid input"}), 400
+        if data == None or 'author' not in data or 'title' not in data or 'language' not in data:
+            return jsonify({"error": "Invalid input"})
 
-        iD = books_list[-1]['id'] + 1 if books_list else 0
+        iD = 0
+        if len(books_list) > 0:
+            iD = books_list[-1]['id'] + 1
+
         new_obj = {
             'id': iD,
             'author': data['author'],
@@ -32,7 +35,7 @@ def handle_books():
         }
 
         books_list.append(new_obj)
-        return jsonify(new_obj), 201
+        return jsonify(new_obj)
 
 @books.route('/book/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def single_book(id):
@@ -40,24 +43,24 @@ def single_book(id):
         for book in books_list:
             if book['id'] == id:
                 return jsonify(book)
-        return jsonify({"error": "Book not found"}), 404
+        return jsonify({"error": "Book not found"})
 
     if request.method == 'PUT':
         for book in books_list:
             if book['id'] == id:
                 data = request.get_json()
-                if not data or 'author' not in data or 'title' not in data or 'language' not in data:
-                    return jsonify({"error": "Invalid input"}), 400
+                if data == None or 'author' not in data or 'title' not in data or 'language' not in data:
+                    return jsonify({"error": "Invalid input"})
 
                 book['author'] = data['author']
                 book['language'] = data['language']
                 book['title'] = data['title']
                 return jsonify(book)
-        return jsonify({"error": "Book not found"}), 404
+        return jsonify({"error": "Book not found"})
 
     if request.method == 'DELETE':
         for index, book in enumerate(books_list):
             if book['id'] == id:
                 books_list.pop(index)
                 return jsonify({"message": "Book deleted successfully"})
-        return jsonify({"error": "Book not found"}), 404
+        return jsonify({"error": "Book not found"})

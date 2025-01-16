@@ -19,5 +19,5 @@ def client_detail(id):
     for client in clients_list:
         if client['id'] == id:
             return jsonify(client)
-    return jsonify({"error": "Client not found"}), 404
+    return jsonify({"error": "Client not found"})
 
