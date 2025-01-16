@@ -1,8 +1,21 @@
 #imports
 from flask import Flask, request,jsonify
+from admin import admin_page
 
 #my app
 app = Flask(__name__)
+
+#BLUEPRINTS
+
+app.register_blueprint(admin_page, url_prefix = "/admin/admin")
+
+@app.route("/")
+def index():
+    return '<h1>Hello! Welcome to this page</h1>'
+
+
+
+
 
 books_list = [
     {
@@ -86,36 +99,6 @@ def single_book(id):
                         if book['id'] == id:
                             books_list.pop(index)
                             return jsonify(books_list)   
-
-# @app.route('/book/<int:id>', methods=['GET', 'PUT', 'DELETE'])
-# def single_book(id):
-#     if request.method == 'GET':
-#         # Find
-#         book = next((book for book in books_list if book['id'] == id), None)
-#         if book:
-#             return jsonify(book), 200
-#         return jsonify({"error": "Book not found"}), 404
-
-#     elif request.method == 'PUT':
-#         # Update
-#         book = next((book for book in books_list if book['id'] == id), None)
-#         if book:
-#             try:
-#                 book['author'] = request.form.get('author', book['author'])
-#                 book['language'] = request.form.get('language', book['language'])
-#                 book['title'] = request.form.get('title', book['title'])
-#                 return jsonify(book), 200
-#             except KeyError as e:
-#                 return jsonify({"error": f"Missing field: {e}"}), 400
-#         return jsonify({"error": "Book not found"}), 404
-
-#     elif request.method == 'DELETE':
-#         # Delete
-#         for index, book in enumerate(books_list):
-#             if book['id'] == id:
-#                 books_list.pop(index)
-#                 return jsonify({"message": "Book deleted", "books": books_list}), 200
-#         return jsonify({"error": "Book not found"}), 404
 
 if __name__ in "__main__":
     app.run(debug=True)
