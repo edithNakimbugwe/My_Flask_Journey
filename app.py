@@ -1,20 +1,22 @@
 #imports
 from flask import Flask, request,jsonify
 from admin import admin_page
+from client import clients_page
 
 #my app
 app = Flask(__name__)
 
 #BLUEPRINTS
 
-app.register_blueprint(admin_page, url_prefix = "/admin/admin")
-
-@app.route("/")
-def index():
-    return '<h1>Hello! Welcome to this page</h1>'
+app.register_blueprint(admin_page, url_prefix = "/admin")
+app.register_blueprint(clients_page, url_prefix = "/client")
 
 
+# @app.route("/")
+# def index():
+#     return '<h1>Hello! Welcome to this page</h1>'
 
+#END BLUEPRINTS
 
 
 books_list = [
